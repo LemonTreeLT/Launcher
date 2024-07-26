@@ -1,0 +1,31 @@
+.default_stage {
+    -fx-background-color: rgba(0, 0, 0, 0);
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-padding: 10px
+}
+
+.default_content {
+    -fx-background-color: rgba(0, 0, 0, 0.5);
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+}
+
+.default_appList {
+    -fx-padding: 10px
+}
+
+.default_navigation {
+    -fx-border-color: white;
+    -fx-border-width: 1px 0 0 0;
+}
+
+.default_navigation_container {
+    -fx-padding: 0 10px 5px 10px; /* 设置外层容器的内边距，保持navigation距离边缘 */
+}
+
+.default_scroll_pane {
+    -fx-padding: 0 0 10px 0;
+    -fx-background-color: transparent;
+    -fx-background: transparent;
+}
