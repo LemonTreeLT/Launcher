@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.StackPane?>
+
+<StackPane xmlns="http://javafx.com/javafx" fx:id="pane"
+           xmlns:fx="http://javafx.com/fxml" styleClass="default_setting_stage"
+           fx:controller="com.lemontree.launcher.controllers.SettingController">
+
+    <ImageView fx:id="background" preserveRatio="true" style="-fx-background-color: rgba(0,0,0,0)"/>
+
+</StackPane>

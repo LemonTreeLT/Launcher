@@ -12,9 +12,6 @@ import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyCodeCombination;
-import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -58,15 +55,9 @@ public class App extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("root.fxml"));
         StackPane root = fxmlLoader.load();
 
-        Scene scene = new Scene(root, 320, 240);
+        Scene scene = new Scene(root);
         scene.setFill(Color.TRANSPARENT);
         scene.getStylesheets().add(String.valueOf(getClass().getResource("css/style.css")));
-
-        KeyCombination keyCombination = new KeyCodeCombination(
-                KeyCode.D, KeyCombination.CONTROL_DOWN, KeyCombination.SHIFT_DOWN
-        );
-
-        scene.getAccelerators().put(keyCombination, this::switchVisible);
 
         double zoom = config.getZoom();
         stage.initStyle(StageStyle.TRANSPARENT);

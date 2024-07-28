@@ -19,6 +19,8 @@ import javafx.scene.text.Font;
 import javafx.util.Duration;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 public class Module extends HBox {
     private static final double TARGET_SIZE = 64.0;
@@ -62,10 +64,8 @@ public class Module extends HBox {
         this.setOnMouseExited(this::onMouseExited);
         this.setOnMouseClicked(this::launch);
 
-        if(info.description() != null) {
-            this.tooltip = new Tooltip(info.description());
-            this.setOnMouseMoved(this::onMouseMoved);
-        } else this.tooltip = null;
+        tooltip = new Tooltip(getDescription());
+        if(info.description() != null) this.setOnMouseMoved(this::onMouseMoved);
     }
 
     public void requestLayout() {
@@ -84,7 +84,8 @@ public class Module extends HBox {
 
     private void onMouseEntered(MouseEvent event) {
         zoomImageView(icon, INITIAL_SIZE);
-        if(tooltip != null) tooltip.show(this,
+        if(tooltip != null) tooltip.show(
+                this,
                 event.getScreenX() + 3,
                 event.getScreenY() + 3);
     }
@@ -95,14 +96,51 @@ public class Module extends HBox {
     }
 
     private void launch(MouseEvent event) {
-        launchAnimation();
+        if(info.launchPath() != null && Files.exists(Path.of(info.launchPath()))) {
+            launchAnimation();
 
-        ProcessBuilder pb = new ProcessBuilder(info.launchPath());
-        try {
-            pb.start();
-        } catch(IOException e) {
-            throw new RuntimeException(e);
-        }
+            ProcessBuilder pb = new ProcessBuilder(info.launchPath());
+            try {
+                pb.start();
+            } catch(IOException e) {
+                throw new RuntimeException(e);
+            }
+        } else errorAnimation();
+    }
+
+    private void errorAnimation() {
+        double durationMillis = 100;
+        double offset = 50 * zoom;
+
+        TranslateTransition r1 = createTransition(durationMillis, offset);
+        TranslateTransition r2 = createTransition(durationMillis, offset);
+        TranslateTransition r3 = createTransition(durationMillis, offset);
+        TranslateTransition l1 = createTransition(durationMillis, -offset);
+        TranslateTransition l2 = createTransition(durationMillis, -offset);
+        TranslateTransition l3 = createTransition(durationMillis, 0);
+
+        r1.setOnFinished(event -> {
+            l1.play();
+            tooltip.setText("这个应用的路径好像出错了,重新添加吧");
+        });
+        l1.setOnFinished(event -> r2.play());
+        r2.setOnFinished(event -> l2.play());
+        l2.setOnFinished(event -> r3.play());
+        r3.setOnFinished(event -> l3.play());
+        l3.setOnFinished(event -> tooltip.setText(getDescription()));
+
+        r1.play();
+    }
+
+    private String getDescription() {
+        if(info.description() != null) return info.description();
+        else return "没有描述呢";
+    }
+
+    private TranslateTransition createTransition(double durationMillis, double toX) {
+        TranslateTransition transition = new TranslateTransition(Duration.millis(durationMillis), this);
+        transition.setToX(toX);
+        return transition;
     }
 
     private void launchAnimation() {

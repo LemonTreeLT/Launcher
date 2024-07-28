@@ -29,3 +29,10 @@
     -fx-background-color: transparent;
     -fx-background: transparent;
 }
+
+.default_setting_stage {
+    -fx-background-color: rgba(0, 0, 0, 0);
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-padding: 10px
+}
