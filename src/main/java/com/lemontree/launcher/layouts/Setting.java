@@ -1,6 +1,7 @@
 package com.lemontree.launcher.layouts;
 
 import com.lemontree.launcher.App;
+import com.lemontree.launcher.controllers.SettingController;
 import com.lemontree.launcher.utils.Config;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -15,8 +16,10 @@ import java.io.IOException;
 
 public class Setting extends Label {
     private double zoom;
-    private Stage settingStage;
     private Config config;
+    private SettingController controller;
+
+    public static Stage settingStage;
 
     public Setting() {
         this.setOnMouseClicked(this::onMouseClicked);
@@ -42,6 +45,7 @@ public class Setting extends Label {
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("Setting.fxml"));
         StackPane pane = fxmlLoader.load();
         Scene scene = new Scene(pane);
+        controller = fxmlLoader.getController();
 
         scene.setFill(Color.TRANSPARENT);
         scene.getStylesheets().add(String.valueOf(App.class.getResource("css/style.css")));
@@ -59,7 +63,8 @@ public class Setting extends Label {
         this.zoom = config.getZoom();
         this.config = config;
         try {
-            this.settingStage = initStage();
+            settingStage = initStage();
+            controller.init();
         } catch(IOException e) {
             throw new RuntimeException(e);
         }

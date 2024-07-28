@@ -7,6 +7,7 @@ module com.lemontree.launcher {
     requires com.alibaba.fastjson2;
     requires jdk.jsobject;
     requires javafx.swing;
+    requires org.jetbrains.annotations;
 
     exports com.lemontree.launcher;
     exports com.lemontree.launcher.controllers;

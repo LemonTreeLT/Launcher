@@ -1,19 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.layout.HBox?>
-
-<?import javafx.scene.control.ScrollPane?>
+<?import com.lemontree.launcher.layouts.Background?>
 <?import com.lemontree.launcher.layouts.Setting?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.*?>
 <StackPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" styleClass="default_stage"
            fx:id="pane" fx:controller="com.lemontree.launcher.controllers.MainController">
-    <ImageView fx:id="background" preserveRatio="true" style="-fx-background-color: rgba(0,0,0,0)"/>
+    <Background fx:id="background" preserveRatio="true" style="-fx-background-color: rgba(0,0,0,0)"/>
 
     <VBox styleClass="default_content">
-        <ScrollPane styleClass="default_scroll_pane" VBox.vgrow="ALWAYS" hbarPolicy="NEVER" vbarPolicy="NEVER" fitToWidth="true">
-            <VBox fx:id="appList" spacing="10" styleClass="default_appList" />
+        <ScrollPane styleClass="default_scroll_pane" VBox.vgrow="ALWAYS" hbarPolicy="NEVER" vbarPolicy="NEVER"
+                    fitToWidth="true">
+            <VBox fx:id="appList" spacing="10" styleClass="default_appList"/>
         </ScrollPane>
 
         <VBox styleClass="default_navigation_container" alignment="BOTTOM_CENTER" spacing="10">
