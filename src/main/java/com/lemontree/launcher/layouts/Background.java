@@ -10,8 +10,8 @@ import org.jetbrains.annotations.Nullable;
 import java.net.URL;
 
 public class Background extends ImageView {
-    public void init(Config config, @Nullable URL imagePath) {
-        double zoom = config.getZoom();
+    public void init(@Nullable URL imagePath) {
+        double zoom = Config.getConfig().getZoom();
 
         if (imagePath == null) throw new NullPointerException("imagePath is null");
 

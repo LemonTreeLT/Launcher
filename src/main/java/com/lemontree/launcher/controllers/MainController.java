@@ -15,7 +15,6 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class MainController implements Initializable {
-    private final Config config = App.config;
 
     @FXML
     public Background background;
@@ -28,18 +27,23 @@ public class MainController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        double zoom = config.getZoom();
-        background.init(config, App.class.getResource("image/background.png"));
-        setting.init(config);
-        pane.setStyle("-fx-padding: " + 10 * zoom + "px");
-        appList.setSpacing(10 * zoom);
+        background.init(App.class.getResource("image/background.png"));
+        setting.init();
 
-        AppInfo[] infos = config.getAppList();
+        layout(Config.getConfig().getZoom());
+        Config.getConfig().addOnZoomChangedListener(this::layout);
+
+        AppInfo[] infos = Config.getConfig().getAppList();
         if(infos.length == 0) {
             AppInfo emptyInfo = new AppInfo("没有应用呢", null,
                     new Image(String.valueOf(App.class.getResource("image/fileNotFound.jpg"))),
                     null, "试着添加一点应用吧");
-            appList.getChildren().add(new Module(emptyInfo, config));
-        } else for(AppInfo info : infos) appList.getChildren().add(new Module(info, config));
+            appList.getChildren().add(new Module(emptyInfo));
+        } else for(AppInfo info : infos) appList.getChildren().add(new Module(info));
+    }
+
+    private void layout(double zoom) {
+        pane.setStyle("-fx-padding: " + 10 * zoom + "px");
+        appList.setSpacing(10 * zoom);
     }
 }

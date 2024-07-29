@@ -25,7 +25,6 @@ import java.util.logging.Logger;
 
 public class App extends Application {
     public static Stage stage;
-    public static Config config = new Config();
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -59,7 +58,7 @@ public class App extends Application {
         scene.setFill(Color.TRANSPARENT);
         scene.getStylesheets().add(String.valueOf(getClass().getResource("css/style.css")));
 
-        double zoom = config.getZoom();
+        double zoom = Config.getConfig().getZoom();
         stage.initStyle(StageStyle.TRANSPARENT);
         stage.setTitle("Launcher");
         stage.setAlwaysOnTop(true);
@@ -73,7 +72,7 @@ public class App extends Application {
     public void switchVisible() {
         if(App.stage.isShowing()) App.stage.hide();
         else {
-            int offset = config.getMouseOffset();
+            int offset = Config.getConfig().getMouseOffset();
             Point mouseLocation = MouseInfo.getPointerInfo().getLocation();
             App.stage.setX(mouseLocation.getX() + offset);
             App.stage.setY(mouseLocation.getY() + offset);

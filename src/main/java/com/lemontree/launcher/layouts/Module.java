@@ -7,6 +7,7 @@ import com.lemontree.launcher.utils.Config;
 import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.ImageView;
@@ -28,12 +29,12 @@ public class Module extends HBox {
 
     private final ImageView icon;
     private final Tooltip tooltip;
+    private final AppInfo info;
 
-    private AppInfo info;
     private double zoom;
 
-    public Module(AppInfo info, Config config) {
-        this.zoom = config.getZoom();
+    public Module(AppInfo info) {
+        this.zoom = Config.getConfig().getZoom();
         this.info = info;
 
         double fitSize = TARGET_SIZE * zoom * 0.504;
@@ -66,16 +67,26 @@ public class Module extends HBox {
 
         tooltip = new Tooltip(getDescription());
         if(info.description() != null) this.setOnMouseMoved(this::onMouseMoved);
+
+        Config.getConfig().addOnZoomChangedListener(this::reLayout);
     }
 
-    public void requestLayout() {
+    public void reLayout(double zoom) {
+        double fitSize = TARGET_SIZE * zoom * 0.504;
+
+        Rectangle clip = (Rectangle) icon.getClip();
+        clip.setWidth(fitSize);
+        clip.setHeight(fitSize);
+
+        icon.setClip(clip);
+        icon.setFitHeight(fitSize);
+        icon.setFitWidth(fitSize);
+
+        this.zoom = Config.getConfig().getZoom();
+        this.setSpacing(5.6 * zoom);
+
 
     }
-
-    public void requestLayout(double zoom, AppInfo info) {
-
-    }
-
 
     private void onMouseMoved(MouseEvent event) {
         tooltip.setX(event.getScreenX() - icon.getBoundsInLocal().getWidth() / 2 + 15);

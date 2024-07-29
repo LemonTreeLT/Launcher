@@ -4,6 +4,7 @@ import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
 import com.lemontree.launcher.App;
+import com.lemontree.launcher.events.ConfigZoomChangeListener;
 import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.embed.swing.SwingFXUtils;
@@ -16,6 +17,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @SuppressWarnings("unused")
@@ -25,6 +28,9 @@ public class Config {
     private static final File CONFIG_FILE = new File(APP_DATA_PATH, "config.json");
     private static final File APP_FILE = new File(APP_DATA_PATH, "app.json");
     private static final File IMAGE_FOLDER = new File(APP_DATA_PATH, "images");
+    private static final Config INSTANCE = new Config();
+
+    private final List<ConfigZoomChangeListener> zoomChangeListeners = new ArrayList<>();
 
     private JSONObject config;
     private JSONObject apps;
@@ -32,6 +38,10 @@ public class Config {
     public Config() {
         createFilesInAppData();
         readFilesToJsonObjects();
+    }
+
+    public static Config getConfig() {
+        return INSTANCE;
     }
 
     public void addApp(Image icon, String name, String launchPath, String description) {
@@ -69,7 +79,7 @@ public class Config {
         int arraySize = Math.min(count, appsArray.size());
         AppInfo[] appList = new AppInfo[arraySize];
 
-        for (int i = 0; i < arraySize; i++) {
+        for(int i = 0; i < arraySize; i++) {
             JSONObject app = appsArray.getJSONObject(i);
             appList[i] = new AppInfo(
                     app.getString("name"),
@@ -83,6 +93,17 @@ public class Config {
         return appList;
     }
 
+    public void addOnZoomChangedListener(ConfigZoomChangeListener litener) {
+        zoomChangeListeners.add(litener);
+    }
+
+    private void notifyZoomListeners(double value) {
+        for(ConfigZoomChangeListener listener : zoomChangeListeners) {
+            listener.onConfigChanged(value);
+        }
+    }
+
+
     public AppInfo[] getAppList() {
         return getAppList(Integer.MAX_VALUE);
     }
@@ -95,17 +116,23 @@ public class Config {
         return getConfigValue("zoom", 1.0);
     }
 
+    public void setZoom(double zoom) {
+        config.put("zoom", zoom);
+        writeJsonToFile(CONFIG_FILE, config);
+        notifyZoomListeners(zoom);
+    }
+
     private int getConfigValue(String key, int defaultValue) {
-        return config.containsKey(key) ? (int) config.get(key) : setConfigDefaultValue(key, defaultValue);
+        return config.containsKey(key)? (int) config.get(key): setConfigDefaultValue(key, defaultValue);
     }
 
     private double getConfigValue(String key, double defaultValue) {
-        return config.containsKey(key) ? parseConfigDouble(key) : setConfigDefaultValue(key, defaultValue);
+        return config.containsKey(key)? parseConfigDouble(key): setConfigDefaultValue(key, defaultValue);
     }
 
     private double parseConfigDouble(String key) {
         Object value = config.get(key);
-        return value instanceof Number ? ((Number) value).doubleValue() : Double.parseDouble(value.toString());
+        return value instanceof Number? ((Number) value).doubleValue(): Double.parseDouble(value.toString());
     }
 
     private int setConfigDefaultValue(String key, int defaultValue) {
@@ -123,9 +150,9 @@ public class Config {
     private void addApp(Image icon, String name, String launchPath, String description, boolean saveIcon) {
         try {
             String id = generateSHA256(name + launchPath + description);
-            String iconFileName = saveIcon ? saveImageToFile(icon, id) : id;
+            String iconFileName = saveIcon? saveImageToFile(icon, id): id;
             saveAppInfo(name, launchPath, description, iconFileName);
-        } catch (IOException | NoSuchAlgorithmException e) {
+        } catch(IOException | NoSuchAlgorithmException e) {
             showErrorAlert("An error occurred while adding app", e.getMessage());
         }
     }
@@ -135,12 +162,12 @@ public class Config {
         byte[] hash = digest.digest(input.getBytes());
         StringBuilder hexString = new StringBuilder(2 * hash.length);
 
-        for (byte b : hash) hexString.append(String.format("%02x", b));
+        for(byte b : hash) hexString.append(String.format("%02x", b));
         return hexString.toString();
     }
 
     private String saveImageToFile(Image image, String name) throws IOException {
-        if (IMAGE_FOLDER.mkdirs()) System.out.println("Image directory created successfully.");
+        if(IMAGE_FOLDER.mkdirs()) System.out.println("Image directory created successfully.");
 
         String iconFileName = name + ".png";
         File iconFile = new File(IMAGE_FOLDER, iconFileName);
@@ -164,14 +191,14 @@ public class Config {
 
     private void createFilesInAppData() {
         File appDataDir = new File(APP_DATA_PATH);
-        if (appDataDir.mkdirs()) System.out.println("AppData directory created successfully.");
+        if(appDataDir.mkdirs()) System.out.println("AppData directory created successfully.");
 
         createFileIfNotExists(CONFIG_FILE);
         createFileIfNotExists(APP_FILE);
     }
 
     private void createFileIfNotExists(File file) {
-        if (!file.exists()) {
+        if(!file.exists()) {
             writeJsonToFile(file, new JSONObject());
             System.out.println(file.getName() + " created successfully.");
         } else {
@@ -183,16 +210,16 @@ public class Config {
         config = readJsonFromFile(CONFIG_FILE);
         apps = readJsonFromFile(APP_FILE);
 
-        if (config == null) {
+        if(config == null) {
             config = new JSONObject();
             writeJsonToFile(CONFIG_FILE, config);
         }
 
-        if (apps == null) {
+        if(apps == null) {
             apps = new JSONObject();
             apps.put("apps", new JSONArray());
             writeJsonToFile(APP_FILE, apps);
-        } else if (apps.getJSONArray("apps") == null) {
+        } else if(apps.getJSONArray("apps") == null) {
             apps.put("apps", new JSONArray());
             writeJsonToFile(APP_FILE, apps);
         }
@@ -200,30 +227,30 @@ public class Config {
 
     private JSONObject readJsonFromFile(File file) {
         try {
-            if (file.exists()) {
+            if(file.exists()) {
                 String content = new String(Files.readAllBytes(file.toPath()));
                 return JSON.parseObject(content);
             } else {
                 System.out.println(file.getName() + " does not exist.");
                 return new JSONObject();
             }
-        } catch (IOException e) {
+        } catch(IOException e) {
             showErrorAlert("An error occurred while reading file " + file.getName(), e.getMessage());
             return new JSONObject();
         }
     }
 
     private void writeJsonToFile(File file, JSONObject jsonObject) {
-        try (FileWriter fileWriter = new FileWriter(file)) {
+        try(FileWriter fileWriter = new FileWriter(file)) {
             fileWriter.write(jsonObject.toJSONString());
-        } catch (IOException e) {
+        } catch(IOException e) {
             showErrorAlert("An error occurred while writing to file " + file.getName(), e.getMessage());
         }
     }
 
     private Image loadImage(String iconFileName) {
         File iconFile = new File(IMAGE_FOLDER, iconFileName);
-        if (iconFile.exists()) return new Image(iconFile.toURI().toString());
+        if(iconFile.exists()) return new Image(iconFile.toURI().toString());
         else return new Image(String.valueOf(App.class.getResource("image/fileNotFound.jpg")));
     }
 

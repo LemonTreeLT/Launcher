@@ -16,7 +16,6 @@ import java.io.IOException;
 
 public class Setting extends Label {
     private double zoom;
-    private Config config;
     private SettingController controller;
 
     public static Stage settingStage;
@@ -59,9 +58,10 @@ public class Setting extends Label {
         return settingPage;
     }
 
-    public void init(Config config) {
+    public void init() {
+        Config config = Config.getConfig();
         this.zoom = config.getZoom();
-        this.config = config;
+
         try {
             settingStage = initStage();
             controller.init();

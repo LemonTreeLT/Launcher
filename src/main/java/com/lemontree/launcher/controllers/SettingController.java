@@ -9,14 +9,14 @@ import com.lemontree.launcher.utils.Config;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class SettingController implements Initializable {
-    private final Config config = App.config;
-
     @FXML
     public Background background;
     @FXML
@@ -25,12 +25,16 @@ public class SettingController implements Initializable {
     public Label titleText;
     @FXML
     public TitleBar titleBar;
+    @FXML
+    public HBox setting_content;
+    @FXML
+    public VBox appList;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         // init node layouts
-        double zoom = config.getZoom();
-        background.init(config, App.class.getResource("image/backgroundBig.jpg"));
+        double zoom = Config.getConfig().getZoom();
+        background.init(App.class.getResource("image/backgroundBig.jpg"));
         pane.setStyle("-fx-padding: " + 10 * zoom + "px");
     }
 

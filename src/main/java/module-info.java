@@ -15,4 +15,5 @@ module com.lemontree.launcher {
     exports com.lemontree.launcher.layouts;
     opens com.lemontree.launcher.controllers to javafx.fxml;
     opens com.lemontree.launcher to javafx.fxml;
+    exports com.lemontree.launcher.events;
 }

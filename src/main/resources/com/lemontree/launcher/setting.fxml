@@ -7,6 +7,8 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.control.Label?>
 
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.ScrollPane?>
 <StackPane xmlns="http://javafx.com/javafx" fx:id="pane"
            xmlns:fx="http://javafx.com/fxml" styleClass="default_setting_stage"
            fx:controller="com.lemontree.launcher.controllers.SettingController">
@@ -14,11 +16,18 @@
     <Background fx:id="background" preserveRatio="true" style="-fx-background-color: rgba(0,0,0,0)"/>
     <StackPane styleClass="default_content">
 
-        <VBox style="-fx-padding: 0 10 0 10">
+        <VBox style="-fx-padding: 0 10 0 10" spacing="10">
             <TitleBar fx:id="titleBar" styleClass="default_title_bar" alignment="TOP_CENTER">
                 <Label fx:id="titleText" text="Setting" style="-fx-font-size: 26" textFill="white"/>
             </TitleBar>
+
+            <HBox fx:id="setting_content">
+                <ScrollPane vbarPolicy="NEVER" hbarPolicy="NEVER" styleClass="default_scroll_pane">
+                    <VBox fx:id="appList"/>
+                </ScrollPane>
+            </HBox>
         </VBox>
+
     </StackPane>
 
 </StackPane>
