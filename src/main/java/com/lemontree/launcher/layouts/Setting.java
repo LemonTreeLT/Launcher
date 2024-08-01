@@ -3,6 +3,7 @@ package com.lemontree.launcher.layouts;
 import com.lemontree.launcher.App;
 import com.lemontree.launcher.controllers.SettingController;
 import com.lemontree.launcher.utils.Config;
+
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -28,14 +29,11 @@ public class Setting extends Label {
         switchVisible();
     }
 
-    private void switchVisible(boolean visible) {
-        if(visible) settingStage.show();
-        else settingStage.hide();
-    }
-
     private void switchVisible() {
-        if(settingStage.isShowing()) settingStage.hide();
-        else settingStage.show();
+        if(settingStage.isShowing()) {
+            settingStage.hide();
+            App.stage.requestFocus();
+        } else settingStage.show();
     }
 
     private Stage initStage() throws IOException {
@@ -55,6 +53,22 @@ public class Setting extends Label {
         settingPage.setWidth(1803 * 0.28 * zoom);
         settingPage.setHeight(963 * 0.28 * zoom);
         settingPage.setAlwaysOnTop(true);
+
+        settingPage.focusedProperty().addListener((observable, oldValue, newValue) -> {
+            if(!newValue) {
+                settingPage.hide();
+                if(App.isFoucsed) App.stage.hide();
+            }
+        });
+
+        App.stage.focusedProperty().addListener((observable, oldValue, newValue) -> {
+            if(!newValue && !settingPage.isShowing()) {
+                App.stage.hide();
+                App.isFoucsed = false;
+            } else if(settingStage.isShowing()) App.isFoucsed = false;
+            else if (newValue) App.isFoucsed = true;
+        });
+
         return settingPage;
     }
 

@@ -25,9 +25,12 @@ import java.util.logging.Logger;
 
 public class App extends Application {
     public static Stage stage;
+    public static boolean isFoucsed = true;
 
     @Override
     public void start(Stage stage) throws IOException {
+        App.stage = stage;
+
         Platform.setImplicitExit(false);
         try {
             GlobalScreen.registerNativeHook();
@@ -66,7 +69,6 @@ public class App extends Application {
         stage.setWidth(700 * 0.28 * zoom);
         stage.setHeight(911 * 0.28 * zoom);
         stage.show();
-        App.stage = stage;
     }
 
     public void switchVisible() {
@@ -74,6 +76,7 @@ public class App extends Application {
         else {
             int offset = Config.getConfig().getMouseOffset();
             Point mouseLocation = MouseInfo.getPointerInfo().getLocation();
+            App.stage.requestFocus();
             App.stage.setX(mouseLocation.getX() + offset);
             App.stage.setY(mouseLocation.getY() + offset);
             App.stage.show();

@@ -23,7 +23,9 @@
 
             <HBox fx:id="setting_content">
                 <ScrollPane vbarPolicy="NEVER" hbarPolicy="NEVER" styleClass="default_scroll_pane">
-                    <VBox fx:id="appList"/>
+                    <VBox fx:id="appList" style="-fx-background-color: green">
+                        <Label text="testestestestestest"/>
+                    </VBox>
                 </ScrollPane>
             </HBox>
         </VBox>
