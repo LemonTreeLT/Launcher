@@ -6,44 +6,48 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.*?>
+<?import com.lemontree.launcher.layouts.ReduceApp?>
 <StackPane xmlns="http://javafx.com/javafx" fx:id="pane"
            xmlns:fx="http://javafx.com/fxml" styleClass="default_setting_stage"
            fx:controller="com.lemontree.launcher.controllers.SettingController">
 
     <Background fx:id="background" preserveRatio="true" style="-fx-background-color: rgba(0,0,0,0)"/>
-    <StackPane styleClass="default_content">
 
-        <VBox style="-fx-padding: 0 10 0 10" spacing="10">
-            <TitleBar fx:id="titleBar" styleClass="default_title_bar" alignment="TOP_CENTER">
-                <Label fx:id="titleText" text="Setting" style="-fx-font-size: 26" textFill="white"/>
-            </TitleBar>
+    <VBox style="-fx-padding: 0 10 0 10" spacing="10" styleClass="default_content">
+        <TitleBar fx:id="titleBar" styleClass="default_title_bar" alignment="TOP_CENTER">
+            <Label fx:id="titleText" text="Setting" style="-fx-font-size: 26" textFill="white"/>
+        </TitleBar>
 
-            <HBox fx:id="setting_content">
-                <VBox styleClass="default_content">
-                    <ScrollPane styleClass="default_scroll_pane" VBox.vgrow="ALWAYS" hbarPolicy="NEVER" vbarPolicy="NEVER"
-                                fitToWidth="true">
-                        <VBox fx:id="appList" spacing="10" styleClass="default_appList"/>
-                    </ScrollPane>
+        <HBox fx:id="settingContent" spacing="10" alignment="CENTER" VBox.vgrow="ALWAYS" style="-fx-padding: 0 0 10 0">
+            <VBox fx:id="appList" styleClass="default_setting_content">
+                <ScrollPane styleClass="default_scroll_pane" VBox.vgrow="ALWAYS" hbarPolicy="NEVER" vbarPolicy="NEVER"
+                            fitToWidth="true">
+                    <VBox spacing="10" styleClass="default_appList"/>
+                </ScrollPane>
 
-                    <VBox styleClass="default_navigation_container" alignment="BOTTOM_CENTER" spacing="10">
-                        <!-- 内层HBox实际的navigation，并设置边框 -->
-                        <HBox styleClass="default_navigation" alignment="BOTTOM_CENTER">
+                <!-- 为了让这个navigation与整个appList保持一个间距 -->
+                <VBox styleClass="default_navigation_container" alignment="BOTTOM_CENTER" spacing="10">
+                    <!-- 为了在绘制一条横线 -->
+                    <VBox styleClass="default_navigation">
+                        <!-- 让实际上的操作按键与横线保持距离 -->
+                        <HBox style="-fx-padding: 5px 0 0 0" alignment="BOTTOM_CENTER">
                             <AddApp fx:id="addAppButtom"/>
+                            <ReduceApp fx:id="reduceAppButtom"/>
                         </HBox>
                     </VBox>
-
                 </VBox>
+            </VBox>
 
-                <VBox fx:id="appInfo">
-                </VBox>
+            <VBox fx:id="appInfo" styleClass="default_setting_content" VBox.vgrow="ALWAYS">
+                <!-- 这里可以添加更多控件 -->
+            </VBox>
 
-                <VBox fx:id="options">
+            <VBox fx:id="options" styleClass="default_setting_content" VBox.vgrow="ALWAYS">
+                <!-- 这里可以添加更多控件 -->
+            </VBox>
 
-                </VBox>
+        </HBox>
+    </VBox>
 
-            </HBox>
-        </VBox>
-
-    </StackPane>
 
 </StackPane>

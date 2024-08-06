@@ -239,7 +239,7 @@ public class Config {
             return new JSONObject();
         }
     }
-
+	
     private void writeJsonToFile(File file, JSONObject jsonObject) {
         try(FileWriter fileWriter = new FileWriter(file)) {
             fileWriter.write(jsonObject.toJSONString());

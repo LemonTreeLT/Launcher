@@ -1,4 +1,6 @@
 package com.lemontree.launcher.layouts;
 
-public class ReduceApp {
+import javafx.scene.image.ImageView;
+
+public class ReduceApp extends ImageView {
 }

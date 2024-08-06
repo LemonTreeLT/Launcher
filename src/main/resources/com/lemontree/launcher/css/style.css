@@ -39,7 +39,7 @@
 
 .default_setting_content {
     -fx-border-color: white;
-    -fx-border-width: 2;
+    -fx-border-width: 1;
     -fx-background-radius: 10;
     -fx-border-radius: 10;
 }
