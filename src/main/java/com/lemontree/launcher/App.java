@@ -7,6 +7,7 @@ import com.github.kwhat.jnativehook.keyboard.NativeKeyListener;
 
 import com.lemontree.launcher.utils.Config;
 
+import javafx.animation.FadeTransition;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -16,6 +17,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.util.Duration;
 
 import java.awt.*;
 import java.io.IOException;
@@ -24,12 +26,13 @@ import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
 public class App extends Application {
-    public static Stage stage;
-    public static boolean isFoucsed = true;
+    public static Stage stagePub;
+    private Stage stage;
 
     @Override
     public void start(Stage stage) throws IOException {
-        App.stage = stage;
+        App.stagePub = stage;
+        this.stage = stage;
 
         Platform.setImplicitExit(false);
         try {
@@ -68,18 +71,40 @@ public class App extends Application {
         stage.setScene(scene);
         stage.setWidth(700 * 0.28 * zoom);
         stage.setHeight(911 * 0.28 * zoom);
-        stage.show();
+
+        addFadeInAnimation(stage);
+        addFadeOutAnimation(stage);
+    }
+
+    private void addFadeInAnimation(Stage stage) {
+        FadeTransition fadeIn = new FadeTransition();
+        fadeIn.setDuration(Duration.millis(100));
+        fadeIn.setNode(stage.getScene().getRoot());
+        fadeIn.setFromValue(0.0);
+        fadeIn.setToValue(1.0);
+
+        stage.setOnShowing(event -> fadeIn.play());
+    }
+
+    private void addFadeOutAnimation(Stage stage) {
+        FadeTransition fadeIn = new FadeTransition();
+        fadeIn.setDuration(Duration.millis(100));
+        fadeIn.setNode(stage.getScene().getRoot());
+        fadeIn.setFromValue(1);
+        fadeIn.setToValue(0);
+
+        stage.setOnHidden(event -> fadeIn.play());
     }
 
     public void switchVisible() {
-        if(App.stage.isShowing()) App.stage.hide();
+        if(stage.isShowing()) stage.hide();
         else {
             int offset = Config.getConfig().getMouseOffset();
             Point mouseLocation = MouseInfo.getPointerInfo().getLocation();
-            App.stage.requestFocus();
-            App.stage.setX(mouseLocation.getX() + offset);
-            App.stage.setY(mouseLocation.getY() + offset);
-            App.stage.show();
+            stage.requestFocus();
+            stage.setX(mouseLocation.getX() + offset);
+            stage.setY(mouseLocation.getY() + offset);
+            stage.show();
         }
     }
 

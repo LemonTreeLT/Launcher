@@ -1,9 +1,9 @@
 package com.lemontree.launcher.layouts;
 
-import com.lemontree.launcher.App;
 import com.lemontree.launcher.utils.AppInfo;
 import com.lemontree.launcher.utils.Config;
 
+import com.lemontree.launcher.utils.CorrespondentHelper;
 import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;
 import javafx.geometry.Pos;
@@ -161,7 +161,7 @@ public class Module extends HBox {
         slideBack.setToX(0 * zoom);
 
         slideOut.setOnFinished(event -> {
-            App.stage.hide();
+            CorrespondentHelper.getApp().hide();
             slideBack.play();
         });
         slideOut.play();

@@ -37,6 +37,13 @@
     -fx-padding: 10px
 }
 
+.default_setting_content {
+    -fx-border-color: white;
+    -fx-border-width: 2;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+}
+
 .default_title_bar {
     -fx-border-color: white;
     -fx-border-width: 0 0 1px 0;

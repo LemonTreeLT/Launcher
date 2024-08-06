@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.StackPane?>
-
-<?import com.lemontree.launcher.layouts.TitleBar?>
+<?import com.lemontree.launcher.layouts.AddApp?>
 <?import com.lemontree.launcher.layouts.Background?>
-<?import javafx.scene.layout.VBox?>
+<?import com.lemontree.launcher.layouts.TitleBar?>
 <?import javafx.scene.control.Label?>
-
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.*?>
 <StackPane xmlns="http://javafx.com/javafx" fx:id="pane"
            xmlns:fx="http://javafx.com/fxml" styleClass="default_setting_stage"
            fx:controller="com.lemontree.launcher.controllers.SettingController">
@@ -22,11 +19,28 @@
             </TitleBar>
 
             <HBox fx:id="setting_content">
-                <ScrollPane vbarPolicy="NEVER" hbarPolicy="NEVER" styleClass="default_scroll_pane">
-                    <VBox fx:id="appList" style="-fx-background-color: green">
-                        <Label text="testestestestestest"/>
+                <VBox styleClass="default_content">
+                    <ScrollPane styleClass="default_scroll_pane" VBox.vgrow="ALWAYS" hbarPolicy="NEVER" vbarPolicy="NEVER"
+                                fitToWidth="true">
+                        <VBox fx:id="appList" spacing="10" styleClass="default_appList"/>
+                    </ScrollPane>
+
+                    <VBox styleClass="default_navigation_container" alignment="BOTTOM_CENTER" spacing="10">
+                        <!-- 内层HBox实际的navigation，并设置边框 -->
+                        <HBox styleClass="default_navigation" alignment="BOTTOM_CENTER">
+                            <AddApp fx:id="addAppButtom"/>
+                        </HBox>
                     </VBox>
-                </ScrollPane>
+
+                </VBox>
+
+                <VBox fx:id="appInfo">
+                </VBox>
+
+                <VBox fx:id="options">
+
+                </VBox>
+
             </HBox>
         </VBox>
 

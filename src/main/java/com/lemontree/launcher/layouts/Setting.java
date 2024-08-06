@@ -4,6 +4,8 @@ import com.lemontree.launcher.App;
 import com.lemontree.launcher.controllers.SettingController;
 import com.lemontree.launcher.utils.Config;
 
+import com.lemontree.launcher.utils.CorrespondentHelper;
+import javafx.animation.FadeTransition;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -12,12 +14,13 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.util.Duration;
 
 import java.io.IOException;
 
 public class Setting extends Label {
-    private double zoom;
     private SettingController controller;
+    private boolean isAppFocused = true;
 
     public static Stage settingStage;
 
@@ -32,7 +35,7 @@ public class Setting extends Label {
     private void switchVisible() {
         if(settingStage.isShowing()) {
             settingStage.hide();
-            App.stage.requestFocus();
+            CorrespondentHelper.getApp().requestFocus();
         } else settingStage.show();
     }
 
@@ -50,38 +53,64 @@ public class Setting extends Label {
         settingPage.setScene(scene);
         settingPage.setTitle("Setting");
         settingPage.initStyle(StageStyle.TRANSPARENT);
-        settingPage.setWidth(1803 * 0.28 * zoom);
-        settingPage.setHeight(963 * 0.28 * zoom);
         settingPage.setAlwaysOnTop(true);
+        settingPage.initOwner(CorrespondentHelper.getApp());
 
         settingPage.focusedProperty().addListener((observable, oldValue, newValue) -> {
             if(!newValue) {
                 settingPage.hide();
-                if(App.isFoucsed) App.stage.hide();
+                if(isAppFocused) CorrespondentHelper.getApp().hide();
             }
         });
 
-        App.stage.focusedProperty().addListener((observable, oldValue, newValue) -> {
+        CorrespondentHelper.getApp().focusedProperty().addListener((observable, oldValue, newValue) -> {
             if(!newValue && !settingPage.isShowing()) {
-                App.stage.hide();
-                App.isFoucsed = false;
-            } else if(settingStage.isShowing()) App.isFoucsed = false;
-            else if (newValue) App.isFoucsed = true;
+                CorrespondentHelper.getApp().hide();
+                isAppFocused = false;
+            } else if(settingStage.isShowing()) isAppFocused = false;
+            else if (newValue) isAppFocused = true;
         });
+
+        addFadeInAnimation(settingPage);
+        addFadeOutAnimation(settingPage);
 
         return settingPage;
     }
 
-    public void init() {
-        Config config = Config.getConfig();
-        this.zoom = config.getZoom();
+    private void addFadeInAnimation(Stage stage) {
+        FadeTransition fadeIn = new FadeTransition();
+        fadeIn.setDuration(Duration.millis(100));
+        fadeIn.setNode(stage.getScene().getRoot());
+        fadeIn.setFromValue(0.0);
+        fadeIn.setToValue(1.0);
 
+        stage.setOnShowing(event -> fadeIn.play());
+    }
+
+    private void addFadeOutAnimation(Stage stage) {
+        FadeTransition fadeIn = new FadeTransition();
+        fadeIn.setDuration(Duration.millis(100));
+        fadeIn.setNode(stage.getScene().getRoot());
+        fadeIn.setFromValue(1);
+        fadeIn.setToValue(0);
+
+        stage.setOnHidden(event -> fadeIn.play());
+    }
+
+    public void init() {
         try {
             settingStage = initStage();
             controller.init();
+
+            layout(Config.getConfig().getZoom());
         } catch(IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private void layout(double zoom) {
         this.setStyle("-fx-font-size: " + 24 * zoom + "px;");
+        settingStage.setWidth(1803 * 0.28 * zoom);
+        settingStage.setHeight(963 * 0.28 * zoom);
     }
 }
