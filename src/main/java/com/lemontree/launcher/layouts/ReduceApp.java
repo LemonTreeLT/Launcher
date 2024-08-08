@@ -1,6 +1,8 @@
 package com.lemontree.launcher.layouts;
 
-import javafx.scene.image.ImageView;
+import javafx.scene.control.Label;
 
-public class ReduceApp extends ImageView {
+public class ReduceApp extends Label {
+    public void init() {
+    }
 }

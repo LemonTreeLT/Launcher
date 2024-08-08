@@ -1,6 +1,9 @@
 package com.lemontree.launcher.controllers;
 
-import com.lemontree.launcher.layouts.*;
+import com.lemontree.launcher.layouts.AddApp;
+import com.lemontree.launcher.layouts.Background;
+import com.lemontree.launcher.layouts.ReduceApp;
+import com.lemontree.launcher.layouts.TitleBar;
 import com.lemontree.launcher.utils.Config;
 import com.lemontree.launcher.utils.CorrespondentHelper;
 
@@ -33,13 +36,9 @@ public class SettingController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         this.zoom = Config.getConfig().getZoom();
 
-        // init node layouts
         background.init(CorrespondentHelper.getResource("image/backgroundBig.jpg"));
-    }
-
-    public void init() {
-        titleBar.init(Setting.settingStage);
         addAppButtom.init();
+        reduceAppButtom.init();
 
         this.layout();
 

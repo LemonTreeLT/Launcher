@@ -94,13 +94,14 @@
                         <!-- Default configuration for running with: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>com.lemontree.launcher/com.lemontree.launcher.HelloApplication</mainClass>
-                            <launcher>app</launcher>
-                            <jlinkZipName>app</jlinkZipName>
-                            <jlinkImageName>app</jlinkImageName>
+                            <mainClass>com.lemontree.launcher/com.lemontree.launcher.App</mainClass>
+                            <launcher>Launcher</launcher>
+                            <jlinkZipName>Launcher</jlinkZipName>
+                            <jlinkImageName>Launcher</jlinkImageName>
                             <noManPages>true</noManPages>
                             <stripDebug>true</stripDebug>
                             <noHeaderFiles>true</noHeaderFiles>
+                            <compress>2</compress>
                         </configuration>
                     </execution>
                 </executions>

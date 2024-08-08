@@ -2,8 +2,8 @@ package com.lemontree.launcher.layouts;
 
 import com.lemontree.launcher.utils.AppInfo;
 import com.lemontree.launcher.utils.Config;
-
 import com.lemontree.launcher.utils.CorrespondentHelper;
+
 import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;
 import javafx.geometry.Pos;
@@ -23,14 +23,14 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 public class Module extends HBox {
-    private static final double TARGET_SIZE = 64.0;
-    private static final double INITIAL_SIZE = 72.0;
+    protected static final double TARGET_SIZE = 64.0;
+    protected static final double INITIAL_SIZE = 72.0;
 
-    private final ImageView icon;
-    private final Tooltip tooltip;
-    private final AppInfo info;
+    protected final ImageView icon;
+    protected final Tooltip tooltip;
+    protected final AppInfo info;
 
-    private double zoom;
+    protected double zoom;
 
     public Module(AppInfo info) {
         this.zoom = Config.getConfig().getZoom();
@@ -83,8 +83,6 @@ public class Module extends HBox {
 
         this.zoom = Config.getConfig().getZoom();
         this.setSpacing(5.6 * zoom);
-
-
     }
 
     private void onMouseMoved(MouseEvent event) {
@@ -105,7 +103,7 @@ public class Module extends HBox {
         if(tooltip != null) tooltip.hide();
     }
 
-    private void launch(MouseEvent event) {
+    protected void launch(MouseEvent event) {
         if(info.launchPath() != null && Files.exists(Path.of(info.launchPath()))) {
             launchAnimation();
 

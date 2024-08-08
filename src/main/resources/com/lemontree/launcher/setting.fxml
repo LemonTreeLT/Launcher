@@ -7,6 +7,7 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.*?>
 <?import com.lemontree.launcher.layouts.ReduceApp?>
+<?import javafx.scene.image.ImageView?>
 <StackPane xmlns="http://javafx.com/javafx" fx:id="pane"
            xmlns:fx="http://javafx.com/fxml" styleClass="default_setting_stage"
            fx:controller="com.lemontree.launcher.controllers.SettingController">
@@ -28,18 +29,14 @@
                 <!-- 为了让这个navigation与整个appList保持一个间距 -->
                 <VBox styleClass="default_navigation_container" alignment="BOTTOM_CENTER" spacing="10">
                     <!-- 为了在绘制一条横线 -->
-                    <VBox styleClass="default_navigation">
-                        <!-- 让实际上的操作按键与横线保持距离 -->
-                        <HBox style="-fx-padding: 5px 0 0 0" alignment="BOTTOM_CENTER">
-                            <AddApp fx:id="addAppButtom"/>
-                            <ReduceApp fx:id="reduceAppButtom"/>
-                        </HBox>
-                    </VBox>
+                    <HBox styleClass="default_navigation" alignment="CENTER" spacing="20">
+                        <AddApp fx:id="addAppButtom" text="+" textFill="white" style="-fx-font-size: 24"/>
+                        <ReduceApp fx:id="reduceAppButtom" text="-" textFill="white" style="-fx-font-size: 24"/>
+                    </HBox>
                 </VBox>
             </VBox>
 
             <VBox fx:id="appInfo" styleClass="default_setting_content" VBox.vgrow="ALWAYS">
-                <!-- 这里可以添加更多控件 -->
             </VBox>
 
             <VBox fx:id="options" styleClass="default_setting_content" VBox.vgrow="ALWAYS">

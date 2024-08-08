@@ -177,7 +177,7 @@ public class Config {
         return iconFileName;
     }
 
-    private void saveAppInfo(String name, String launchPath, String description, String id) throws IOException {
+    private void saveAppInfo(String name, String launchPath, String description, String id) {
         JSONObject newApp = new JSONObject();
         newApp.put("id", id);
         newApp.put("name", name);
@@ -239,7 +239,7 @@ public class Config {
             return new JSONObject();
         }
     }
-	
+
     private void writeJsonToFile(File file, JSONObject jsonObject) {
         try(FileWriter fileWriter = new FileWriter(file)) {
             fileWriter.write(jsonObject.toJSONString());
