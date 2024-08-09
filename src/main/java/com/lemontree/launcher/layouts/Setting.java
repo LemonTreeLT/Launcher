@@ -1,22 +1,20 @@
 package com.lemontree.launcher.layouts;
 
-import com.lemontree.launcher.stages.SettingStage;
 import com.lemontree.launcher.utils.Config;
 import com.lemontree.launcher.utils.CorrespondentHelper;
 
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
-
-import java.io.IOException;
+import javafx.stage.Stage;
 
 public class Setting extends Label {
-    public static SettingStage settingStage;
-
     private void onMouseClicked(MouseEvent event) {
         switchVisible();
     }
 
     private void switchVisible() {
+        Stage settingStage = CorrespondentHelper.getSetting();
+
         if(settingStage.isShowing()) {
             settingStage.hide();
             CorrespondentHelper.getApp().requestFocus();
@@ -28,15 +26,9 @@ public class Setting extends Label {
     }
 
     public Setting() {
-        try {
-            System.out.println("Setting buttom inited");
-            settingStage = new SettingStage();
-            this.setOnMouseClicked(this::onMouseClicked);
-            Config.getConfig().addOnZoomChangedListener(this::layout);
+        this.setOnMouseClicked(this::onMouseClicked);
+        Config.getConfig().addOnZoomChangedListener(this::layout);
 
-            layout(Config.getConfig().getZoom());
-        } catch(IOException e) {
-            throw new RuntimeException(e);
-        }
+        layout(Config.getConfig().getZoom());
     }
 }

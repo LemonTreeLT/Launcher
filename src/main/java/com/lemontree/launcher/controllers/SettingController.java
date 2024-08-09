@@ -1,14 +1,13 @@
 package com.lemontree.launcher.controllers;
 
-import com.lemontree.launcher.layouts.AddApp;
-import com.lemontree.launcher.layouts.Background;
-import com.lemontree.launcher.layouts.ReduceApp;
-import com.lemontree.launcher.layouts.TitleBar;
+import com.lemontree.launcher.layouts.*;
+import com.lemontree.launcher.utils.AppInfo;
 import com.lemontree.launcher.utils.Config;
 import com.lemontree.launcher.utils.CorrespondentHelper;
 
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -29,7 +28,6 @@ public class SettingController implements Initializable {
     public VBox appInfo;
     public VBox options;
 
-
     private double zoom;
 
     @Override
@@ -41,6 +39,9 @@ public class SettingController implements Initializable {
         reduceAppButtom.init();
 
         this.layout();
+
+        AppInfo[] appInfos = Config.getConfig().getAppList();
+        for(AppInfo appInfo : appInfos) appList.getChildren().add(new MiniModule(appInfo));
 
         Config.getConfig().addOnZoomChangedListener(this::onZoomChanged);
     }

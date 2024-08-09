@@ -8,6 +8,7 @@ import com.github.kwhat.jnativehook.keyboard.NativeKeyListener;
 import com.lemontree.launcher.utils.Config;
 
 import com.lemontree.launcher.utils.CorrespondentHelper;
+import com.lemontree.launcher.utils.LLogger;
 import javafx.animation.FadeTransition;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -28,6 +29,8 @@ import java.util.logging.Logger;
 public class HomeStage extends Stage {
     public static Stage stagePub;
     private final Stage stage;
+
+    private final LLogger logger = new LLogger(this.getClass());
 
     public HomeStage(Stage primaryStage) {
         this.stage = primaryStage;
@@ -79,6 +82,8 @@ public class HomeStage extends Stage {
 
         addFadeInAnimation(stage);
         addFadeOutAnimation(stage);
+
+        logger.info("Home stage initialized");
     }
 
     private void addFadeInAnimation(Stage stage) {
@@ -114,7 +119,7 @@ public class HomeStage extends Stage {
     }
 
     public void stop() {
-        System.out.println("Appliction is stopping");
+        logger.warning("Appliction is stopping");
         try {
             GlobalScreen.unregisterNativeHook();
         } catch(NativeHookException e) {

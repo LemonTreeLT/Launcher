@@ -3,6 +3,7 @@ package com.lemontree.launcher.stages;
 import com.lemontree.launcher.utils.Config;
 import com.lemontree.launcher.utils.CorrespondentHelper;
 
+import com.lemontree.launcher.utils.LLogger;
 import javafx.animation.FadeTransition;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -14,12 +15,21 @@ import javafx.util.Duration;
 
 import java.io.IOException;
 
-public class SettingStage extends Stage{
+public class SettingStage extends Stage {
     private boolean isAppFocused = true;
+    private static final SettingStage instance = new SettingStage();
 
-    public SettingStage() throws IOException {
+    private final LLogger logger = new LLogger(this.getClass());
+
+    public SettingStage() {
+        logger.info("Init setting stage");
         FXMLLoader fxmlLoader = new FXMLLoader(CorrespondentHelper.getResource("setting.fxml"));
-        StackPane pane = fxmlLoader.load();
+        StackPane pane;
+        try {
+            pane = fxmlLoader.load();
+        } catch(IOException e) {
+            throw new RuntimeException("Failed to load setting stage", e);
+        }
         Scene scene = new Scene(pane);
 
         scene.setFill(Color.TRANSPARENT);
@@ -43,7 +53,7 @@ public class SettingStage extends Stage{
                 CorrespondentHelper.getApp().hide();
                 isAppFocused = false;
             } else if(this.isShowing()) isAppFocused = false;
-            else if (newValue) isAppFocused = true;
+            else if(newValue) isAppFocused = true;
         });
 
         addFadeInAnimation(this);
@@ -73,5 +83,9 @@ public class SettingStage extends Stage{
         fadeIn.setToValue(0);
 
         stage.setOnHidden(event -> fadeIn.play());
+    }
+
+    public static SettingStage getSettingStage() {
+        return instance;
     }
 }

@@ -27,7 +27,7 @@ public class Module extends HBox {
     protected static final double INITIAL_SIZE = 72.0;
 
     protected final ImageView icon;
-    protected final Tooltip tooltip;
+    protected final Tooltip tooltip; // 描述框
     protected final AppInfo info;
 
     protected double zoom;

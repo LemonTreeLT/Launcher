@@ -5,6 +5,7 @@ import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
 import com.lemontree.launcher.App;
 import com.lemontree.launcher.events.ConfigZoomChangeListener;
+
 import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.embed.swing.SwingFXUtils;
@@ -31,6 +32,7 @@ public class Config {
     private static final Config INSTANCE = new Config();
 
     private final List<ConfigZoomChangeListener> zoomChangeListeners = new ArrayList<>();
+    private final LLogger logger = new LLogger(Config.class);
 
     private JSONObject config;
     private JSONObject apps;
@@ -167,12 +169,14 @@ public class Config {
     }
 
     private String saveImageToFile(Image image, String name) throws IOException {
-        if(IMAGE_FOLDER.mkdirs()) System.out.println("Image directory created successfully.");
+        if(IMAGE_FOLDER.mkdirs()) logger.info("Image directory created successfully.");
 
         String iconFileName = name + ".png";
         File iconFile = new File(IMAGE_FOLDER, iconFileName);
         BufferedImage bImage = SwingFXUtils.fromFXImage(image, null);
         ImageIO.write(bImage, "png", iconFile);
+
+        logger.info("Image saved to " + IMAGE_FOLDER.getAbsolutePath() + File.separator + name);
 
         return iconFileName;
     }
@@ -186,12 +190,12 @@ public class Config {
 
         apps.getJSONArray("apps").add(newApp);
         writeJsonToFile(APP_FILE, apps);
-        System.out.println("App added successfully.");
+        logger.info("App added successfully.");
     }
 
     private void createFilesInAppData() {
         File appDataDir = new File(APP_DATA_PATH);
-        if(appDataDir.mkdirs()) System.out.println("AppData directory created successfully.");
+        if(appDataDir.mkdirs()) logger.info("AppData directory created successfully.");
 
         createFileIfNotExists(CONFIG_FILE);
         createFileIfNotExists(APP_FILE);
@@ -200,9 +204,9 @@ public class Config {
     private void createFileIfNotExists(File file) {
         if(!file.exists()) {
             writeJsonToFile(file, new JSONObject());
-            System.out.println(file.getName() + " created successfully.");
+            logger.info(file.getName() + " created successfully.");
         } else {
-            System.out.println(file.getName() + " already exists.");
+            logger.info(file.getName() + " already exists.");
         }
     }
 
@@ -231,10 +235,11 @@ public class Config {
                 String content = new String(Files.readAllBytes(file.toPath()));
                 return JSON.parseObject(content);
             } else {
-                System.out.println(file.getName() + " does not exist.");
+                logger.info(file.getName() + " does not exist.");
                 return new JSONObject();
             }
         } catch(IOException e) {
+            logger.severe("An error occurred while reading file: " + file.getName());
             showErrorAlert("An error occurred while reading file " + file.getName(), e.getMessage());
             return new JSONObject();
         }
@@ -273,7 +278,7 @@ public class Config {
         appToRemove.ifPresent(app -> {
             apps.getJSONArray("apps").remove(app);
             writeJsonToFile(APP_FILE, apps);
-            System.out.println("App removed successfully.");
+            logger.info("App removed successfully.");
         });
     }
 
