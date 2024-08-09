@@ -7,7 +7,6 @@ import com.lemontree.launcher.utils.CorrespondentHelper;
 
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -34,8 +33,7 @@ public class SettingController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         this.zoom = Config.getConfig().getZoom();
 
-        background.init(CorrespondentHelper.getResource("image/backgroundBig.jpg"));
-        addAppButtom.init();
+        background.setImagePath(CorrespondentHelper.getResource("image/backgroundBig.jpg"));
         reduceAppButtom.init();
 
         this.layout();

@@ -13,7 +13,7 @@ public class CorrespondentHelper {
         return HomeStage.stagePub;
     }
 
-    public static Stage getSetting() {
+    public static SettingStage getSetting() {
         return SettingStage.getSettingStage();
     }
 

@@ -108,8 +108,6 @@ public class AppInfoCard extends VBox {
     }
 
     private void updateTooltip() {
-        logger.info("description: " + descriptionTooltip.getText());
-        logger.info("appName: " + appName.getText());
         this.descriptionTooltip.setText(this.appDescription.getText());
         this.nameTooltip.setText(this.appName.getText());
     }

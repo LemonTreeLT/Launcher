@@ -26,7 +26,7 @@ public class MainController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        background.init(CorrespondentHelper.getResource("image/background.png"));
+        background.setImagePath(CorrespondentHelper.getResource("image/background.png"));
 
         layout(Config.getConfig().getZoom());
         Config.getConfig().addOnZoomChangedListener(this::layout);

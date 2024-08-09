@@ -20,23 +20,38 @@ public class SettingStage extends Stage {
     private static final SettingStage instance = new SettingStage();
 
     private final LLogger logger = new LLogger(this.getClass());
+    private final FXMLLoader fxmlLoader = new FXMLLoader(CorrespondentHelper.getResource("setting.fxml"));
+
+    private final Scene settingScene;
+    private final Scene addingScene;
 
     public SettingStage() {
         logger.info("Init setting stage");
-        FXMLLoader fxmlLoader = new FXMLLoader(CorrespondentHelper.getResource("setting.fxml"));
-        StackPane pane;
+
+        FXMLLoader settingLoader = new FXMLLoader(CorrespondentHelper.getResource("setting.fxml"));
+        FXMLLoader addingLoader = new FXMLLoader(CorrespondentHelper.getResource("adding.fxml"));
+
+        StackPane addingPane;
+        StackPane settingPane;
+
         try {
-            pane = fxmlLoader.load();
+            settingPane = settingLoader.load();
+            addingPane = addingLoader.load();
         } catch(IOException e) {
+            logger.severe("Failed to load setting stages");
             throw new RuntimeException("Failed to load setting stage", e);
         }
-        Scene scene = new Scene(pane);
 
-        scene.setFill(Color.TRANSPARENT);
-        scene.getStylesheets().add(String.valueOf(CorrespondentHelper.getResource("css/style.css")));
+        this.addingScene = new Scene(addingPane);
+        this.settingScene = new Scene(settingPane);
 
-        this.setScene(scene);
-        this.setTitle("Setting");
+        settingScene.setFill(Color.TRANSPARENT);
+        settingScene.getStylesheets().add(String.valueOf(CorrespondentHelper.getResource("css/style.css")));
+
+        addingScene.setFill(Color.TRANSPARENT);
+        addingScene.getStylesheets().add(String.valueOf(CorrespondentHelper.getResource("css/style.css")));
+
+        this.setScene(settingScene);
         this.initStyle(StageStyle.TRANSPARENT);
         this.setAlwaysOnTop(true);
         layout(Config.getConfig().getZoom());
@@ -58,6 +73,14 @@ public class SettingStage extends Stage {
 
         addFadeInAnimation(this);
         addFadeOutAnimation(this);
+    }
+
+    public void switchSceneToSetting() {
+        this.setScene(settingScene);
+    }
+
+    public void switchSceneToAppAdding() {
+        this.setScene(addingScene);
     }
 
     private void layout(double zoom) {

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Label?>
+
+<?import com.lemontree.launcher.layouts.Background?>
+<?import com.lemontree.launcher.layouts.TitleBar?>
+<StackPane xmlns="http://javafx.com/javafx"
+           xmlns:fx="http://javafx.com/fxml" styleClass="default_setting_stage"
+           fx:controller="com.lemontree.launcher.controllers.AddingController"
+           prefHeight="400.0" prefWidth="600.0">
+
+    <Background fx:id="background" preserveRatio="true" style="-fx-background-color: rgba(0,0,0,0)"/>
+
+    <VBox style="-fx-padding: 0 10 0 10" spacing="10" styleClass="default_content">
+        <TitleBar fx:id="titleBar" styleClass="default_title_bar" alignment="CENTER">
+            <Label text="添加应用" style="-fx-font-size: 26" textFill="white"/>
+        </TitleBar>
+
+
+
+    </VBox>
+
+</StackPane>
